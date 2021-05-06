@@ -26,7 +26,11 @@ Registering a database/database server with Era allows you to create a Time Mach
 
 #. Open **Era** in your browser and log in with the provided credentials.
 
-#. From the **Dashboard** dropdown menu, select **Databases**.
+   .. note::
+
+      You may experienced a delay getting a log in prompt the first time you log into Era. It could take as much as 3 minutes. Era ENG is investigating.
+
+#. From the **Dashboard** dropdown menu, select **Databases** and then **Sources** from the left-hand menu.
 
    .. figure:: images/1.png
 
@@ -34,7 +38,7 @@ Registering a database/database server with Era allows you to create a Time Mach
 
       You will see a **MariaDB** version of your **USER**\ *##*\ **-FiestaDB** already registered. These database servers are used in the **Containerizing Apps and CI/CD** lab track and are unrelated to this exercise.
 
-#. Select **Sources** from the left-hand menu and click **+ Register > Microsoft SQL Server > Database**.
+#. Click **+ Register > Microsoft SQL Server > Database**.
 
    .. figure:: images/4.png
 
@@ -42,7 +46,7 @@ Registering a database/database server with Era allows you to create a Time Mach
 
    - Select **Not Registered**
    - **Nutanix Cluster** - EraCluster
-   - **Name of VM** - USER\ *##*\ -MSSQL-Source (ex. USER01-MSSQL-Source *Case Sensitive*)
+   - **Name of VM** - USER\ *##*\ -MSSQL-Source
    - **Windows Administrator Name** - Administrator
    - **Windows Administrator Password** - Nutanix/4u
    - **Instance** - MSSQLSERVER
@@ -236,7 +240,7 @@ In a production environment, you would follow a manual backup/restore procedure 
 
 #. Log in using the **NTNXLAB\\Administrator** credentials.
 
-#. Enable **Remote Desktop** for the VM as shown in the screenshot below and connect via RDP for a smoother experience over remote connections.
+#. Enable **Remote Desktop** for the VM as shown in the screenshot below and then **connect via RDP** to enable you to copy/paste into the VM.
 
    .. figure:: images/20.png
 
@@ -344,11 +348,19 @@ Before testing failover, you will need to update the configuration of your Fiest
 
    .. figure:: images/30.png
 
-#. Verify the connection to your new database was successful by browsing to \http://*USER##-FiestaWeb-IP-ADDRESS*\ and using the web app to make an update to the database.
+#. Verify the connection to your new database was successful by browsing to the IP Address of your **USER**\ *##*\ **-FiestaWeb** VM (ex. http://10.0.0.100) and using the web app to make an update to the database.
 
    This can be done by clicking **Stores > Add New Store** and filling out the required fields.
 
    .. figure:: images/33.png
+
+   .. note::
+
+      If you cannot access the web interface this indicates there was something wrong with your DB connection.
+
+      Open a VM console to your **USER**\ *##*\ **-FiestaWeb** VM (U\:root P\:nutanix/4u) and run ``cat Fiesta/config/config.js`` to view your DB configuration. Is the database name correct? Are you using the FQDN as **DB_HOST_ADDRESS**?
+
+      You can re-run the Calm action to easily make any fixes and restart the Fiesta service.
 
 #. In **Prism Central**, power off your **USER**\ *##*\ **-SQLAG-1** VM running on your on-premises cluster.
 
@@ -397,6 +409,10 @@ Before testing failover, you will need to update the configuration of your Fiest
 #. Optionally, you can update your Fiesta configuration again using the same **Calm Action** to point to your 10.210.X.X listener IP address, as shown in the Topology view in Era.
 
    In a production scenario, a proper load balancer would be used across both sites to re-direct to whichever SQL listener IP is associated with the primary replica of the database. Additionally, you would also scale the web tier across sites and similarly leverage a load balancer for connectivity.
+
+.. raw:: html
+
+    <H1><a href="http://lookup.ntnxworkshops.com/" target="_blank"><font color="#B0D235"><center>Click Here To Submit Validation Request</center></font></a></H1>
 
 Takeaways
 +++++++++

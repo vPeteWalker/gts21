@@ -4,7 +4,7 @@
 Preparing Policies and Projects
 -------------------------------
 
-With the additional infrastructure capacity you've unlocked with Nutanix Clusters, one of the goals is to provide users with the ability to request and operate their owns VMs and applications. Depending on the user and/or application, PTE needs to ensure that VMs are properly protected for backup and DR purposes, as well as properly secured on the network from the time of creation.
+With the additional infrastructure capacity you've unlocked with Nutanix Clusters, one of the goals is to provide users with the ability to request and operate their own VMs and applications. Depending on the user and/or application, PTE needs to ensure that VMs are properly protected for backup and DR purposes, as well as properly secured on the network from the time of creation.
 
 In this exercise, you'll configure example policies in Prism Central for both data protection and microsegmentation that can be applied to apps and VMs. The goal is to have these policies in place prior to provisioning your VMs, so they can be applied and enforced as VMs are created through self-service.
 
@@ -39,6 +39,12 @@ A Prism **Category** is a key value pair. Categories are assigned to entities (s
 #. In **Prism Central**, select :fa:`bars` **> Policies > Protection Policies**.
 
 #. Click **Create Protection Policy** and fill out the following:
+
+   .. note::
+
+      If you are prompted that **Leap is not enabled on Local AZ**, click **Enable > Enable > Enable** to enable the feature. This is a non-disruptive, one-time operation within **Prism Central**. You can then click the **X** to close the warning dialog while **Leap** is enabled in the background.
+
+      .. figure:: images/23.png
 
    - **Policy name** - USER\ *##*-Bronze (ex. USER01-Bronze)
    - **Primary Location > Location** - Local AZ
@@ -98,9 +104,13 @@ Similar to the previous exercise, you'll map a microsegmentation policy to speci
 
    You can view the web interface of the application by opening \http://<*USER##-FiestaWeb-VM-IP*>.
 
-   ..note::
+   .. note::
 
       Ignore the Fiesta deployment with alternate VM names, as these are used in other GTS labs.
+
+   .. note::
+
+      If you have already completed the **Hybrid Cloud Database Management** lab track, you may not be able to access your Fiesta web front end as it is connected to your AAG database. Inability to connect to the app will not impact this lab, you can proceed.
 
 #. Right-click your **USER##-FiestaWeb** VM and select **Manage Categories**.
 
@@ -114,13 +124,9 @@ Similar to the previous exercise, you'll map a microsegmentation policy to speci
 
 #. In the **Search** field, specify the **Environment: Production** category and click :fa:`plus-circle` to add it.
 
-#. Search for the **User** category and select the **User:** *##* value based on your :ref:`clusterdetails` assignment.
+#. Search for the **User** category and select the pre-staged **User:** *##* value (NOT one your **USER**\ *##*\ **-DP** values) based on your :ref:`clusterdetails` assignment.
 
    .. figure:: images/9.png
-
-   .. note::
-
-      The **User** category and values have already been pre-staged to the lab environment.
 
 #. Click **Save**.
 
@@ -128,7 +134,7 @@ Similar to the previous exercise, you'll map a microsegmentation policy to speci
 
    .. raw:: html
 
-      <strong><font color="red">Do NOT add the User:## category to this VM!</font></strong>
+      <strong><font color="red">Do NOT add the User:## category to this VM!</font></strong><br>
 
 #. In **Prism Central**, select :fa:`bars` **> Policies > Security**.
 
@@ -167,7 +173,7 @@ Creating A Calm Project
 
 Nutanix Calm allows you to build, provision, and manage your applications across both private (AHV, ESXi) and public cloud (AWS, Azure, GCP) infrastructure.
 
-In order for non-infrastructure administrators to access Calm, allowing them to create or manage applications, users or groups must first be assigned to a **Project**, which acts as a logical container to define user roles, infrastructure resources, and resource quotas. Projects define a set users with a common set of requirements or a common structure and function, such as a team of developers collaborating on the Fiesta application.
+In order for non-infrastructure administrators to access Calm, allowing them to create or manage applications, users or groups must first be assigned to a **Project**, which acts as a logical container to define user roles, infrastructure resources, and resource quotas. Projects define a of set users with a common set of requirements or a common structure and function, such as a team of developers collaborating on the Fiesta application.
 
 #. In **Prism Central**, select :fa:`bars` **> Services > Calm**.
 
@@ -175,11 +181,15 @@ In order for non-infrastructure administrators to access Calm, allowing them to 
 
    .. figure:: images/12.png
 
-#. Specify *USER##*\ **-Project** (ex. USER01-Project) as your **Project Name**.
+#. Specify **USER**\ *##*\ **-Project** (ex. USER01-Project) as your **Project Name**.
 
 #. Under **Users, Groups, and Roles**, click **+ User** and fill out the following:
 
-   - **Name** - user\ *##*\ @ntnxlab.local (ex. user01@ntnxlab.local)
+   .. note::
+
+      If **+ User** is greyed out, refresh Calm. The **NTNXLAB.local** profile is already configured in Prism Central, but this issue has occurred (rarely) in testing.
+
+   - **Name** - operator\ *##*\ @ntnxlab.local (ex. operator01@ntnxlab.local)
    - **Role** - Operator
    - Click **Save**
 
@@ -222,7 +232,7 @@ For the purposes of this exercise, you will upload an existing Blueprint of a si
 
 #. Click **Upload Blueprint** and select the **CentOS VM.json** file downloaded in Step 1.
 
-#. Update the **Blueprint Name** to include your *Initials* or *USER##* and select the Calm Project you created in the previous exercise.
+#. Update the **Blueprint Name** to include your **USER**\ *##* and select the Calm Project you created in the previous exercise.
 
    .. figure:: images/17.png
 

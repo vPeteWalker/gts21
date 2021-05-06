@@ -39,10 +39,10 @@ A single node Nutanix cluster running in AWS has already been provisioned and re
 
 .. figure:: images/1.png
 
-Citrix Desktop Delivery Controller
-..................................
+Citrix Delivery Controller
+..........................
 
-A Citrix Desktop Delivery Controller (DDC) has been deployed on each shared environment via Calm Blueprint, which can be viewed in **Prism Central > Services > Calm > Blueprints > CitrixBootcampInfra**.
+A Citrix Delivery Controller (DDC) has been deployed on each shared environment via Calm Blueprint, which can be viewed in **Prism Central > Services > Calm > Blueprints > CitrixBootcampInfra**.
 
    .. figure:: images/2.png
 

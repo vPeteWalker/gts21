@@ -36,10 +36,10 @@ In total, to automate your **Add Desktop** function, your Runbook will need to c
    - **Name** - USER\ *##* AWS PE VIP
    - **Project** - USER\ *##*\ -Project
    - **Type** - HTTP
-   - **Base URL** - \https://*YOUR-AWS-CLUSTER-PRISM-VIP*\ :9440 (ex. https://10.210.X.X:9440)
+   - **Base URL** - \https://*YOUR-AWS-CLUSTER-PRISM-VIP*\ :9440 (ex. https://10.210.X.5:9440)
    - **Authentication > Type** - Basic
    - **Username** - admin
-   - **Password** - Refer to your :ref:`clusterassignments`
+   - **Password** - Refer to your :ref:`clusterdetails`
 
    .. figure:: images/5.png
 
@@ -50,10 +50,10 @@ In total, to automate your **Add Desktop** function, your Runbook will need to c
    - **Name** - USER\ *##* HPOC PE VIP
    - **Project** - USER\ *##*\ -Project
    - **Type** - HTTP
-   - **Base URL** - \https://*YOUR-HPOC-CLUSTER-PRISM-VIP*\ :9440 (ex. https://10.42.X.39:9440)
+   - **Base URL** - \https://*YOUR-HPOC-CLUSTER-PRISM-VIP*\ :9440 (ex. https://10.42.X.37:9440)
    - **Authentication > Type** - Basic
    - **Username** - admin
-   - **Password** - Refer to your :ref:`clusterassignments`
+   - **Password** - Refer to your :ref:`clusterdetails`
 
 #. Click **Save**.
 
@@ -62,9 +62,9 @@ In total, to automate your **Add Desktop** function, your Runbook will need to c
    - **Name** - USER\ *##* DDC
    - **Project** - USER\ *##*\ -Project
    - **Type** - Windows
-   - **IP Addresses** - ddc.ntnxlab.local
+   - **IP Addresses** - *YOUR-Citrix-DDC-VM-IP* (10.XX.XX.44, NOT your AutoAD(DC) IP)
    - **Username** - NTNXLAB\\Administrator
-   - **Password** - Refer to your :ref:`clusterassignments`
+   - **Password** - Refer to :ref:`clusterdetails`
 
 #. Click **Save**.
 
@@ -95,7 +95,11 @@ Variables will allow you to define the names of your machine catalogs and delive
 
    .. figure:: images/2.png
 
-#. Click **Add/Edit Variables > + Add Variable** and create the following variables (CASE SENSITIVE):
+#. Click **Add/Edit Variables > + Add Variable** and create the following variables:
+
+   .. raw:: html
+
+      <BR><font color="#FF0000"><strong>The variable names and values are not case sensitive, but the runbook will fail if the Machine Catalog and Delivery Group values do not match the values in Citrix Studio. Watch out for typos and extra spaces!</strong></font><BR>
 
    - **Variable 1**
 
@@ -282,6 +286,8 @@ Testing Your Runbook
 
       .. figure:: images/12.png
 
+      Also verify your variable values for **ONPREM_MCATALOG**, **CLOUD_MCATALOG**, and **DELIVERY_GROUP** match the names in Citrix Studio.
+
 #. If properly configured, the Runbook should complete successfully in a matter of seconds.
 
    .. figure:: images/13.png
@@ -297,6 +303,10 @@ Testing Your Runbook
    In an upcoming version of Nutanix Calm, you will be able to publish Runbooks to the Calm Marketplace, allowing you to use a version of this Runbook to allow users to perform self-service requests for a virtual desktop.
 
    Or you could fully automate the process to grow and shrink your machine catalogs based on utilization by `launching Runbooks via API <https://www.nutanix.dev/2020/06/12/nutanix-calm-runbooks-api-automation/>`_.
+
+.. raw:: html
+
+    <H1><a href="http://lookup.ntnxworkshops.com/" target="_blank"><font color="#B0D235"><center>Click Here To Submit Validation Request</center></font></a></H1>
 
 Takeaways
 +++++++++

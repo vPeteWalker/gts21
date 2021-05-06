@@ -446,7 +446,7 @@ As seen in Era, there are multiple variables that need to be populated in order 
 
 
       # Get the UUID of the Era server
-      era_uuid=$(curl -k --insecure --silent https://${era_ip}/era/v0.9/clusters -H 'Content-Type: application/json' --user $era_admin:$era_password | jq '.[].id' | tr -d \")
+      era_uuid=$(curl -k --insecure --silent https://${era_ip}/era/v0.9/clusters -H 'Content-Type: application/json' --user $era_admin:$era_password | jq -r '.[] | select(.name=="EraCluster")| .id')
 
       # Get the UUID of the network called Era_Managed_MariaDB
       network_id=$(curl --silent -k "https://${era_ip}/era/v0.9/profiles?type=Network&name=Era_Managed_MariaDB" -H 'Content-Type: application/json' --user $era_admin:$era_password | jq '.id' | tr -d \")
@@ -688,7 +688,7 @@ Testing Your Development Build
 
 .. raw:: html
 
-  <H1><font color="#B0D235"><center>Congratulations!</center></font></H1>
+   <H1><a href="http://lookup.ntnxworkshops.com/" target="_blank"><font color="#B0D235"><center>Click Here To Submit Validation Request</center></font></a></H1>
 
 By leveraging **Nutanix Era** as part of your CI/CD pipeline, you are now able to easily deploy clones of your production application database to deliver complete application development environments to your users.
 

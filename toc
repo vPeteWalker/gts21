@@ -1,0 +1,60 @@
+.. toctree::
+   :maxdepth: 2
+   :caption: Hybrid Cloud IaaS
+   :name: _hybridiaas
+   :hidden:
+
+   snow/gettingstarted/gettingstarted
+   snow/policies/policies
+   snow/snowcalm/snowcalm
+   snow/migration/migration
+   snow/alerts/alerts
+   snow/webhook/webhook
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Hybrid Cloud Database Management
+   :name: _hybrideuc
+   :hidden:
+
+   dbs/gettingstarted/gettingstarted
+   dbs/clustersaag/clustersaag
+   dbs/clustersdam/clustersdam
+   dbs/patching/patching
+   dbs/sqlmonitoring/sqlmonitoring
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Hybrid Cloud EUC
+   :name: _hybrideuc
+   :hidden:
+
+   euc/gettingstarted/gettingstarted
+   euc/expand/expand
+   euc/runbook/runbook
+   euc/secure/secure
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Containerizing Apps and CI/CD
+   :name: _cicd
+   :hidden:
+
+   cicd/start/start
+   cicd/basic/basic
+   cicd/phase2/phase2
+   cicd/phase3/phase3
+   cicd/phase4/phase4
+   cicd/phase5/phase5
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Cloud Native Apps on Nutanix
+   :name: _k8s
+   :hidden:
+
+   karbon/gettingstarted/gettingstarted
+   karbon/preparation/preparation
+   karbon/karbon/karbon
+   karbon/deploy/deploy
+   karbon/day-2/day-2

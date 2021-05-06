@@ -21,11 +21,15 @@ Configuring ID Based Security
 
    <strong><font color="red">Configuring the settings in this section only needs to be done once per shared environment.</font></strong><br><br>
 
-#. If the **Bootcamp Users** and **SSP Developers** user groups have already been added, review the configuration and skip to :ref:`euc_flowpolicy`.
+.. note::
+
+   You can ignore any warnings about the **Prism-Pro-Cluster** having a version of AOS < 5.17, as this isn't a real cluster.
 
 #. In **Prism Central**, select :fa:`bars` **> Prism Central Settings**.
 
 #. Under **Flow**, select **ID Based Security**.
+
+#. If the **Bootcamp Users** and **SSP Developers** user groups have already been added, review the configuration and skip to :ref:`euc_flowpolicy`. Otherwise, complete the steps below to configure **ID Based Security**.
 
 #. If **No Active Directory Domains** have been added, click **Use Existing AD**.
 
@@ -74,7 +78,11 @@ Adding The Flow VDI Policy
 
 .. raw:: html
 
-   <strong><font color="red">Configuring the settings in this section only needs to be done once per shared environment.</font></strong><br><br>
+   <strong><font color="red">Configuring the settings in this section only needs to be done once per shared environment. You wil have an opportunity in the steps below to explore the capabilities of the built-in VDI Policy but the policy will not be applied as it would affect all users of the shared lab environment.</font></strong><br><br>
+
+The VDI Policy needs to be added to Prism Central in order for Flow to start processing Active Directory logins for VMs. This will start automatically adding the **ADGroup** category to VMs that are in use by AD user accounts mapped to the groups that you've configured for ID Based Security in Prism Central.
+
+In addition to the single VDI Policy, which allows you to map whitelist connections to your various ADGroup values, you can also leverage the ADGroup category in Isolation Policies.
 
 #. If the **VDI Policy** already exists, review the steps and proceed to :ref:`euc_flowpolicy2`.
 
@@ -84,6 +92,12 @@ Adding The Flow VDI Policy
 
    .. figure:: images/6.png
 
+   .. note::
+
+      If **Secure VDI Groups (VDI Policy)** appears greyed out, this means the policy has already been created. By design, Flow currently only supports a single VDI Policy, as you are able to perform mappings for multiple Active Directory user groups within a single policy.
+
+      Click **Cancel** and search for **VDI Policy** in the list of available policies. Review the following steps to see how the policy works, but action is not required until you reach `Creating A User Based Isolation Policy`_.
+
 #. Click **Create**.
 
 #. Select **Include all VMs**.
@@ -92,7 +106,7 @@ Adding The Flow VDI Policy
 
    Typically you would select **Include VMs by name** and specify whatever portion of your VM naming scheme is shared across all your virtual desktops (ex. VDI or CTX). As the shared environment lacks this consistency, we will target ALL VMs. This will ensure all VMs will be subject to AD logon processing by Prism Central to dynamically assign its **ADGroup** category.
 
-#. Select **Add these VMs to a default policy**.
+.. #. Select **Add these VMs to a default policy**.
 
    .. figure:: images/7.png
 
@@ -116,7 +130,7 @@ Adding The Flow VDI Policy
 
    .. raw:: html
 
-      <strong><font color="red">DO NOT ENFORCE THIS POLICY AS IT COULD NEGATIVELY IMPACT OTHER USERS ON YOUR SHARED CLUSTER!</font></strong><br><br>
+      <br><br><strong><font color="red">DO NOT ENFORCE THIS POLICY AS IT COULD NEGATIVELY IMPACT OTHER USERS ON YOUR SHARED CLUSTER!</font></strong><br><br>
 
    .. figure:: https://media.giphy.com/media/yAcKHAu1iFdTvOysZK/giphy.gif
 
@@ -135,7 +149,7 @@ In addition to the single VDI Policy, which allows you to map whitelist connecti
 
 #. Fill out the following fields:
 
-   - **Name** - USER\ *##*\ -UserIsolation (ex. USER01-ADIsolation)
+   - **Name** - USER\ *##*\ -ADIsolation (ex. USER01-ADIsolation)
    - **Purpose** - Blacklisting NTNXLAB Bootcamp Users from category
    - **Isolate this category** - ADGroup:Bootcamp Users
    - **From this category** - User:\ *##* (ex. USER:01)
@@ -165,7 +179,7 @@ In addition to the single VDI Policy, which allows you to map whitelist connecti
 
    .. figure:: images/12.png
 
-#. Return to your **USER**\ *##*\ **-UserIsolation** policy in **Prism Central** and observe that traffic flows have been discovered, and your VM has been automatically added to the **ADGroup:Bootcamp Users** category.
+#. Return to your **USER**\ *##*\ **-ADIsolation** policy in **Prism Central** and observe that traffic flows have been discovered, and your VM has been automatically added to the **ADGroup:Bootcamp Users** category.
 
    .. figure:: images/14.png
 
@@ -174,6 +188,10 @@ In addition to the single VDI Policy, which allows you to map whitelist connecti
    .. figure:: images/15.png
 
    That's it! Optionally, you can continue logging into desktops as your **user** and **devuser** accounts and validate that categories and policy are applied as expected - whether on-prem or in the cloud!
+
+.. raw:: html
+
+    <H1><a href="http://lookup.ntnxworkshops.com/" target="_blank"><font color="#B0D235"><center>Click Here To Submit Validation Request</center></font></a></H1>
 
 Takeaways
 +++++++++

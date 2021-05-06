@@ -6,13 +6,18 @@ Lab Support
 
 If you are experiencing issues with a lab, ask your question in the appropriate Slack channel below. Each of these channels will be staffed by multiple users who have previously completed the labs and will be able to assist you with troubleshooting.
 
-- **General/Infrastructure Issues (Lab VPN/VDI, Cluster, etc.)** - `#gtsemea-general <slack://channel?team=T0252CLM8&id=C01N6T4AF8D>`_
-- **Hybrid Cloud IaaS Labs** - `#gtsemea-iaas <slack://channel?team=T0252CLM8&id=C01MHCV0M5Z>`_
-- **Hybrid Cloud Database Management Labs** - `#gtsemea-dbs <slack://channel?team=T0252CLM8&id=C01MH9PKPS6>`_
-- **Hybrid Cloud EUC Labs** - `#﻿gtsemea-euc <slack://channel?team=T0252CLM8&id=C01ME6XTULV>`_
-- **Containerizing Apps and CI/CD Labs** - `#﻿gtsemea-cicd <slack://channel?team=T0252CLM8&id=C01MVU9CR41>`_
-- **Cloud Native Apps on Nutanix Labs** - `#﻿gtsemea-cna <slack://channel?team=T0252CLM8&id=C01MHG5NDPD>`_
+- **Infrastructure Issues (Lab VPN/VDI, Lab assignments, etc.)** - `#gtsapac-general <slack://channel?team=T0252CLM8&id=C01NMAJS1DH>`_
+- **Hybrid Cloud IaaS Labs** - `#gtsapac-snow <slack://channel?team=T0252CLM8&id=C01RGFAF3BM>`_
+- **Hybrid Cloud Database Management Labs** - `#gtsapac-db <slack://channel?team=T0252CLM8&id=C01Q12P40J0>`_
+- **Hybrid Cloud EUC Labs** - `#﻿gtsapac-euc <slack://channel?team=T0252CLM8&id=C01PV3TH5DZ>`_
+- **Containerizing Apps and CI/CD Labs** - `#﻿gtsapac-cicd <slack://channel?team=T0252CLM8&id=C01PV3U8BM1>`_
+- **Cloud Native Apps on Nutanix Labs** - `#﻿gtsapac-karbon <slack://channel?team=T0252CLM8&id=C01RGFD4N1Z>`_
 
-Please provide a detailed description of your issue, including the name of the exercise and any associated errors. If the issue requires additional troubleshooting, a SME will contact you to start a screen sharing session via Slack or Zoom.
+When posting, please include the following:
+
+   - A description of your issue
+   - Your Prism Central IP
+   - Your USER## ID
+   - Your ServiceNow URL (*for Hybrid Cloud IaaS Labs issues only*)
 
 *See someone else struggling with an issue you've solved? Get involved! Supporting one another is what Nutants do best!*

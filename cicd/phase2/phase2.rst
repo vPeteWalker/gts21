@@ -12,7 +12,7 @@ In addition to the CI platform, we will also require a supported version control
 
 But first - your most important tool is your development environment!
 
-In creating the initial containerized version of Fiesta, we used a command line text editor (ex. **vi** or **nano**) to manipulate files. While these tools can certain do the job, as we've seen, this method is not exactly easy, or efficient to modify files on a large scale.
+In creating the initial containerized version of Fiesta, we used a command line text editor (ex. **vi** or **nano**) to manipulate files. While these tools can certainly do the job, as we've seen, this method is not exactly easy, or efficient to modify files on a large scale.
 
 In this exercise, we'll graduate to **Visual Studio Code**. **Visual Studio Code** is a free source-code editor made by Microsoft for Windows, Linux and macOS. Features include support for debugging, syntax highlighting, intelligent code completion, snippets, code refactoring, and embedded Git.
 
@@ -39,7 +39,7 @@ Visual Studio Code (VSC)
 
    .. figure:: images/2b.png
 
-#. Select the location **C:\\Users\\Administrator\\.ssh\\config** (typically first entry) to update the config file.
+#. Select the location **C:\\Users\\Administrator\ \\.ssh\\config** (typically first entry) to update the config file.
 
 #. Select **Connect** on the pop-up in the bottom right corner to connect to the VM.
 
@@ -178,6 +178,10 @@ To do so we will use ``docker exec`` to execute commands *within* the Gitea cont
 
    - Under **General Settings**
 
+      .. note::
+
+         Ensure you are updating the **Base URL** from **HTTP** to **HTTPS**!
+
      - **SSH Server Port**: 2222
      - **Gitea Base URL**: **https**://*<IP ADDRESS OF YOUR DOCKER VM>*:3000
 
@@ -255,7 +259,7 @@ You may have noticed that the **Drone** service is described in the same **docke
 
 #. Return to your existing **Visual Studio Code** session.
 
-#. From the **Explorer** side panel, open **/root/github/docker-composer.yaml**.
+#. From the **Explorer** side panel, open **/root/github/docker-compose.yaml**.
 
 #. Under **drone-server > environment**, update the following fields:
 
@@ -272,7 +276,7 @@ You may have noticed that the **Drone** service is described in the same **docke
 
    .. figure:: images/18b.png
 
-#. Save **docker-composer.yaml**.
+#. Save **docker-compose.yaml**.
 
 #. Return to your Terminal session.
 

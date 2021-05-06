@@ -125,6 +125,20 @@ Enabling Multi-Cluster Data Access Management
 
    .. figure:: images/9.png
 
+   Once this operation is done, there are additional hidden operations that need to complete before you will be able to clone your database to the remote host.
+
+#. In **Operations**, click **Show System Operations** in the left-hand menu. It also helps to filter by **Status: Running** instead of **Status: All**.
+
+   After Era creates a snapshot of your **USER**\ *##*\ **-SampleDB**, it will begin syncing snapshots for both the **DATABASE** and **SOFTWARE** snapshots, as shown below.
+
+   .. figure:: images/25.png
+
+   You only need to wait for the **DATABASE** snapshot to complete in order to continue.
+
+   .. note::
+
+      These jobs will remain at **5%** and then jump to **100%** on completion, they do not show linear progress of the replication. It was take up to an hour for this to complete with multiple users performing replications simultaneously across the lab environment.
+
 #. Return to **Time Machines > USER**\ *##*\ **-SampleDB_TM > Data Access Management** and note that Time Machine data is now available on both clusters.
 
    .. figure:: images/11.png
@@ -137,6 +151,8 @@ Enabling Multi-Cluster Data Access Management
 
    .. figure:: images/19.png
 
+#. Click **Update**.
+
 #. Select **AWS-Cluster** from the **Nutanix Cluster** dropdown menu.
 
 #. Click **Actions > Create Database Clone > Database**.
@@ -146,6 +162,10 @@ Enabling Multi-Cluster Data Access Management
 #. Select **Current Time** to clone your database using the latest available data.
 
    .. figure:: images/12.png
+
+   .. note::
+
+      If **Point in Time** displays **Invalid**, data is still being synced to the remote site.
 
 #. Click **Next**.
 
@@ -169,7 +189,9 @@ Enabling Multi-Cluster Data Access Management
 
    .. figure:: images/21.png
 
-   Continue with the :ref:`dbs_patching` exercise to keep your new database servers up to date!
+.. raw:: html
+
+    <H1><a href="http://lookup.ntnxworkshops.com/" target="_blank"><font color="#B0D235"><center>Click Here To Submit Validation Request</center></font></a></H1>
 
 Takeaways
 +++++++++

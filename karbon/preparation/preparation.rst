@@ -4,7 +4,7 @@
 Deploying Karbon
 ----------------
 
-In this exercise you will deploy a Nutanix Karbon Kubernetes cluster.
+In this exercise you will deploy a complete Kubernetes cluster using Nutanix Karbon and verify your ability to communicate with the cluster via command line API tool, ``kubectl``.
 
 Deploying Your Cluster
 ++++++++++++++++++++++
@@ -61,9 +61,11 @@ To get the full experience of the simplicity of using Karbon to host cloud nativ
 
 #. On **Network Provider**, keep the default selections and click **Next**.
 
-   .. note::
+      Karbon utilizes **Flannel** to provide Layer 3 IPv4 networking between multiple nodes within the Karbon cluster. Kubernetes assumes that each Pod has a unique, routable IP inside the cluster.
 
-      Something about Flannel and Calico and Pod CIDR Range/ Service CIDR range
+      The **Service CIDR** defines the internal network range on which services (like etcd) are exposed.
+
+      The **Pod CIDR** defines the network range used to IP pods. The default configuration allows for a maximum of 256 nodes with up to 256 pods per node.
 
 #. On **Storage Class**, fill out the following fields:
 
@@ -81,13 +83,25 @@ To get the full experience of the simplicity of using Karbon to host cloud nativ
 
    This process will take approximately 10 minutes to complete. During this time, Karbon will deploy a non-highly available (development) Kubernetes cluster consisting of the following components:
 
-      - **1x Master Node** - The **master** node acts as the API front-end of the Kubernetes cluster and manages workloads provisioned on **worker** nodes.
-      - **1x Worker Node** - The **worker** nodes run the Pods (or containers)
-      - **1x etcd Node** - **etcd** is a distributed (in multi-node configurations), key-value store used to store Kubernetes cluster data.
+      - **1x Master Node**
 
-#. Once your **Cluster Status** reaches **Healthy**, you can proceed to the next exercise.
+         The **Master** node acts as the API front-end of the Kubernetes cluster and manages workloads provisioned on **Worker** nodes.
+
+      - **1x etcd Node**
+
+         **etcd** is a distributed (in multi-node configurations), key-value store used to store Kubernetes cluster data. This includes all of the YAML data that describes the Resources we will be deploying on the cluster to create Pods, Services, and more.
+
+      - **1x Worker Node**
+
+         The **Worker** nodes run the Pods as assigned by the **Master** nodes.
+
+   If you're still waiting for your Karbon cluster to provision, you can review the :ref:`karbon_networking` which provides more context around Karbon networking at the beginning of the next lab. *Be sure to return to this lab after reading to complete the connection to your Karbon cluster*.
+
+#. Once your **Cluster Status** reaches **Healthy**, click your cluster **Name** to view the Karbon dashboard.
 
    .. figure:: images/9.png
+
+   Currently, the Karbon dashboard reports on the health of the Kubernetes infrastructure and provides functions for cluster management, such as providing additional persistent storage for your Pods via Nutanix Volumes or Nutanix Files.
 
 Connecting to Your Kubernetes Cluster
 +++++++++++++++++++++++++++++++++++++
@@ -97,6 +111,10 @@ By default, Kubernetes uses a file for authentication instead of username and pa
 We will use this file to interact with the cluster using the Kubernetes command line utility ``kubectl``, which is pre-installed in your **USER**\ *##*\ **-WinToolsVM** VM.
 
 #. Connect to your **USER**\ *##*\ **-WinToolsVM** VM via RDP using the **NTNXLAB\\Administrator** credentials.
+
+   .. raw:: html
+
+      <BR><font color="#FF0000"><strong>Make sure you are NOT using the local Administrator account, you should be connecting as NTNXLAB\Administrator or Administrator@ntnxlab.local</strong></font><BR><BR>
 
 #. Within your **USER**\ *##*\ **-WinToolsVM** VM, open **Prism Central** in Google Chrome.
 
@@ -148,9 +166,14 @@ We will use this file to interact with the cluster using the Kubernetes command 
 
    .. figure:: images/14.png
 
+   .. note::
+
+      For security purposes, the token used by **kubectl.cfg** is only valid for 24 hours by default. If you are completing these labs over multiple days, you will eventually need to download a fresh **kubectl.cfg** from Karbon.
 
 .. raw:: html
 
     <H1><font color="#B0D235"><center>Congratulations!</center></font></H1>
 
-I'm going to bed. We'll add a wrap-up for this tomorrow, yay!
+Using Nutanix Karbon, you've deployed and connected to a Kubernetes cluster in minutes. As seen in the wizard, deploying a highly available Kubernetes cluster for production environments is equally as simple.
+
+In the next exercise, we will build on this deployment by adding third party services commonly used to support production-ready cloud native application environments, and how they work with Karbon.

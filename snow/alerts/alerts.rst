@@ -1,10 +1,10 @@
 .. _snow_alerts:
 
------------------------------------
-ServiceNow Alert & CMDB Integration
------------------------------------
+-------------------------------------
+ServiceNow Alert and CMDB Integration
+-------------------------------------
 
-Since July 2019, ServiceNow has offered native support for discovering Nutanix infrastructure running AHV or ESXi as part of its Change Management Database (CMDB). This provides ServiceNow/Nutanix customers with complete visibility of Nutanix clusters, hosts, VMs, categories, CVMs, storage pools, and storage containers with ServiceNow - including the ability to:
+Since July 2019, ServiceNow has offered native support for discovering Nutanix infrastructure running AHV or ESXi as part of its Configuration Management Database (CMDB). This provides ServiceNow/Nutanix customers with complete visibility of Nutanix clusters, hosts, VMs, categories, CVMs, storage pools, and storage containers with ServiceNow - including the ability to:
 
    - Generate full cluster topologies
    - Report on storage utilization
@@ -30,7 +30,7 @@ Subscription Plugins
 
 Certain plugins are available as subscriptions separate from the core ServiceNow platform.
 
-- `Discovery <https://docs.servicenow.com/bundle/paris-it-operations-management/page/product/discovery/reference/r-discovery.html>`_ - Finds applications and devices on the network and updates the Change Management Database (CMDB)
+- `Discovery <https://docs.servicenow.com/bundle/paris-it-operations-management/page/product/discovery/reference/r-discovery.html>`_ - Finds applications and devices on the network and updates the Configuration Management Database (CMDB)
 - `Event Management <https://docs.servicenow.com/bundle/paris-it-operations-management/page/product/event-management/concept/c_EM.html>`_ - Provides alert aggregation and root cause analysis (RCA) for discovered services, application services, and automated alert groups.
 - `IntegrationHub <https://docs.servicenow.com/bundle/paris-servicenow-platform/page/administer/integrationhub/concept/integrationhub.html>`_ - IntegrationHub enables execution of third-party APIs as a part of a flow when a specific event occurs in ServiceNow. These integrations, referred to as spokes, are easy to configure and enable you to quickly add powerful actions without the need to write a script. For example, you can post a message and incident details in a Slack channel when a high priority incident is created.
 
@@ -67,7 +67,7 @@ While you may typically want to send many, or all, Nutanix alerts from your clus
 
    - **Entity Type** - VM
    - **Entity** - All VMs in a Category
-   - **Category** - Your User:\ *##* Category (ex. User:01)
+   - **Category** - Your User: *##* Category (ex. User: 01)
    - **Metric** - Memory Usage
 
 #. Under **Static Threshold**, select **Alert Critical if** and specify **>= 75%**.
@@ -105,7 +105,7 @@ Nutanix Playbooks, or X-Play, allow administrators to easily automate tasks with
 
 #. Click **+ Add Action** and select **Send Alert to ServiceNow**.
 
-#. Refer to your :ref:`clusterdetails` and enter the **ServiceNow Instance Name** from your **Developer Instance URL** (ex. dev12345) and your **ServiceNow admin Credentials**.
+#. Refer to your :ref:`clusterdetails` and enter the **ServiceNow Instance Name** (ex. dev12345) and your **ServiceNow admin Credentials**.
 
    .. figure:: images/8.png
 
@@ -123,7 +123,7 @@ Nutanix Playbooks, or X-Play, allow administrators to easily automate tasks with
 
    Hmmm, maybe we should apply some artificial load instead!
 
-#. SSH into your *Initials*\ **-CentOS####** VM as **root** and run the following commands to begin consuming free memory:
+#. SSH into your **USER**\ *##*\ **-CentOS####** VM as **root** and run the following commands to begin consuming free memory:
 
    ::
 
@@ -140,6 +140,10 @@ Nutanix Playbooks, or X-Play, allow administrators to easily automate tasks with
 
    This can be seen in on the **VM Metrics** page inside Prism Central as well, though this data is only updated in 5 minute increments.
 
+   .. note::
+
+      The alert could take as long as 15 minutes to trigger, good time to stretch and grab a *drink*!
+
 #. Once the **Alert** appears in **Prism Central**, cancel the stress command in your SSH session by pressing ``Ctrl+C``.
 
    .. figure:: images/12.png
@@ -152,11 +156,11 @@ Nutanix Playbooks, or X-Play, allow administrators to easily automate tasks with
 
    .. figure:: images/14.png
 
-   This provides... You can access addition details about resources within the dashboard, such as **Hosts**, by clicking them.
+   This provides as overview of all of the Nutanix objects discovered by ServiceNow through Prism Central API. You can access additional details about resources within the dashboard, such as **Hosts**, by clicking them.
 
 #. Within the dashboard, select the **Nutanix VM Summary** chart to view all currently discovered Nutanix VMs.
 
-#. Select your **VM** to view associated details from the **Change Management Database**.
+#. Search for and select your **USER**\ *##*\ **-CentOS####** VM to view associated details from the **Configuration Management Database**.
 
    .. figure:: images/15.png
 
@@ -174,7 +178,7 @@ Nutanix Playbooks, or X-Play, allow administrators to easily automate tasks with
 
 #. In the **Filter Navigator** field in the upper-left, search for **All Alerts**.
 
-   If there are multiple alerts, you can easily identify yours by clicking the **Filter** icon and looking for **Resource starts with** *Your Initials*.
+   If there are multiple alerts, you can easily identify yours by clicking the **Filter** icon as shown below and selecting **Resource**, **starts with**, and entering *USER##* (ex. USER01).
 
    .. figure:: images/13.png
 
@@ -182,7 +186,11 @@ Nutanix Playbooks, or X-Play, allow administrators to easily automate tasks with
 
    .. figure:: images/17.png
 
-   With the alert data inside of ServiceNow, IT has visibility into which dependent services could be impacts, historical related incidents, knowledgebase articles, and the ability to open an incident to track remediation activities.
+   With the alert data inside of ServiceNow, IT has visibility into which dependent services could be impacted, historical related incidents, knowledgebase articles, and the ability to open an incident to track remediation activities.
+
+.. raw:: html
+
+    <H1><a href="http://lookup.ntnxworkshops.com/" target="_blank"><font color="#B0D235"><center>Click Here To Submit Validation Request</center></font></a></H1>
 
 Takeaways
 +++++++++

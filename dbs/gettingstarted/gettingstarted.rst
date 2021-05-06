@@ -12,6 +12,10 @@ Current SQL Server deployments inside of PTE do not follow Microsoft best practi
 
 Ideally, PTE would be able to separate their overcrowded database servers, but they lack the on-premises capacity. Additionally, they have concerns about keeping up to date with the latest versions of SQL Server and patching if they were to host each database on its own server - not to mention how to monitor all of those additional servers.
 
+.. .. raw:: html
+
+   <strong><font color="red">Due to a late emerging issue with the SQL Server patching lab and the way the GTS clusters were staged, the patching lab needed to be removed. Stay tuned for Star Wars X: Return of the Patching Lab, coming to a multi-cluster Era bootcamp near you!</font></strong><br>
+
 Your Environment
 ++++++++++++++++
 
@@ -47,6 +51,8 @@ Using a Calm Blueprint, each on-premises (HPOC) cluster has been pre-staged with
 
    .. figure:: images/3.png
 
+
+
 Nutanix Era
 ...........
 
@@ -66,7 +72,7 @@ Each shared environment has been pre-staged with a Nutanix Era server, configure
 
       Software Profiles are templates that include the database engine installation and the host operating system, and are used for provisioning and cloning operations. This template exists as a hidden disk image on your Nutanix storage.
 
-   - **MSSQL_19_USER**\ *##* Software Profiles pre-created using the same VM, but located only on **AWS-Cluster**.
+..   - **MSSQL_19_USER**\ *##* Software Profiles pre-created using the same VM, but located only on **AWS-Cluster**.
 
       .. figure:: images/5.png
 

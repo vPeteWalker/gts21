@@ -1,21 +1,14 @@
-.. _environment_start:
+.. _cicd_environment_start:
 
 ---------------
 Getting Started
 ---------------
 
-<STILL NEED TO PROVIDE OVERALL INTRO>
+While the first three lab tracks highlight the benefits of Nutanix Clusters on AWS in terms of ease of lift and shift, disaster recovery, and infrastructure elasticity, this lab begins to look at the alternate path for customers looking to enable a path to multi-cloud through re-platforming applications.
 
-..
-   You will learn the basic steps to migrate (?) an existing 2-tier application to a containerized application.
+In this lab track you will go through the process of migrating a simple application service, your **Fiesta** web front end, to a Docker container. You will deploy additional tools to build a Continuous Integration/Continuous Deployment (CI/CD) pipeline that will allow you define and deliver your application as code, also referred to as **Infrastructure as Code**.
 
-   During this workshop, you will learn how to:
-
-      - Build and test the new containers [ARE WE BUILDING, IF THESE ARE DEPLOYED FROM CALM?]
-
-      - Upload the containers to Docker hub registry [WHY?]
-
-      - Deploy the new containers [SOMETHING MORE DESCRIPTIVE?]
+The lab is designed to provide you with practical experience around the complexities and benefits of re-platforming applications. This leads into the following lab track, **Cloud Native Apps on Nutanix**, which looks at the infrastructure components of running containerized apps in Kubernetes on Nutanix.
 
 Lab Prerequisites
 +++++++++++++++++
@@ -58,7 +51,7 @@ Using a Calm Blueprint, each on-premises (HPOC) cluster has been pre-staged with
 
       A CentOS 7 VM running a NodeJS-based web application used to access the Fiesta database. The Fiesta app is a simple example of a web application for performing inventory management for party goods supply stores.
 
-      You can validate your Fiesta application is capable of reaching your source database by browsing to \http://*USER##-Fiesta_App_VM-IP-ADDRESS*\ /
+      You can validate your Fiesta application is capable of reaching your source database by browsing to \http://*USER##-Fiesta_App_VM-IP-ADDRESS*\ :5001/
 
    - **USER**\ *##*\ **-MariaDB_VM**
 

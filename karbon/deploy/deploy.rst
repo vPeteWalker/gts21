@@ -1,46 +1,42 @@
-.. _environment_deploy:
+.. _karbon_environment_deploy:
 
-Fiesta Application
-==================
+----------------------------
+Deploying Fiesta Web Service
+----------------------------
 
-During the workshop we are at the stage where we are going to start deploying our application, Fiesta App, on the Kubernetes cluster. This module is explaining the following
+In the **Containerizing Apps & CI/CD** lab, we explored how to create container images from a legacy VM-based application. What we were ignoring was the infrastructure on which the container ran: our single VM development environment.
 
-- Deploy the Fiesta App and service for the App so we can communicate with the Application
-- Configure Traefik for the "URL routing"
-- Connect to the database
+In this exercise we will build on that experience by deploying a Fiesta container and publishing as a service on the Kubernetes cluster, able to take advantage of all of the orchestration and resiliency that Kubernetes can provide.
 
 .. note::
-   Estimated time **45 minutes**
 
-   All screenshots have the **Downloads** folder of the logged in user as the location where we save files
+   This exercise does not depend on previous completion of the **Containerizing Apps & CI/CD** lab. This lab will use a pre-built **Fiesta** container image.
 
-Deploy the Fiesta App
----------------------
+Creating The Manifest
++++++++++++++++++++++
 
-As you have noticed Kubernetes uses YAML file to deploy the different resources like pods, deployments, namespaces and services. As we haven't a YAML file already we need to build that for the Fiesta App.
+We'll begin by creating the manifest file for the **Fiesta** web frontend and then dissect the different components of the file.
 
-#. Open VSC.
+#. Open **Visual Studio Code** in your **USER**\ *##*\ **-WinToolsVM** VM.
 
-#. Create a new file
-
-#. Copy the below content and paste it in the file
+#. Select **File > New File** and paste the following into the blank file:
 
    .. code-block:: yaml
 
       apiVersion: apps/v1
       kind: Deployment
       metadata:
-        name: npm-fiesta
+        name: fiesta-web-pods
         namespace: default
       spec:
+        replicas: 3
         selector:
           matchLabels:
-            run: npm-fiesta
-        replicas: 3
+            run: fiesta-web
         template:
           metadata:
             labels:
-              run: npm-fiesta
+              run: fiesta-web
           spec:
             containers:
             - name: npm-fiesta
@@ -51,133 +47,175 @@ As you have noticed Kubernetes uses YAML file to deploy the different resources 
       apiVersion: v1
       kind: Service
       metadata:
-        name: npm-fiesta
+        name: fiesta-web-svc
         namespace: default
-        labels:
-          run: npm-fiesta
       spec:
         ports:
         - port: 3000
           protocol: TCP
         selector:
-          run: npm-fiesta
+          run: fiesta-web
 
-#. Save the file as **fiesta_app.yaml**
+#. Save the file as **fiesta_app.yaml** in your **Downloads** folder.
 
-Let's dissect the content high level.
+   .. figure:: images/13.png
 
-The top part until the ``---`` icon is a deployment, so consider that the installation of the application (Pod). In the lower part after the ``---`` sign we see the service deployment. Service is how can we communicate with the Pod. The ``---`` is the resource separator for Kubernetes. So the split symbol between Deployment and Service in the above example.
+   *So what does this manifest DO?*
 
-Explained Deployment
-^^^^^^^^^^^^^^^^^^^^
+   **TL;DR**
 
-In the deployment area there are some important parts.
+      The manifest downloads the Fiesta container from a public repository and provisions 3 copies and are exposed as a Service in the Kubernetes cluster named **fiesta-web-svc** and listening on port **3000**. The lack of **LoadBalancer** service in the manifest means we will not have external IP for the service.
 
-- **kind**: Deployment, this tells Kubernetes what to expect for a resource perspective
-- **namespace**: default, Namespaces can be used to separate logically Pod, Services or other resources. Consider namespace as a subnet in a network. All can still communicate with each other, but are logically separated
-- **spec->selector->matchLabels->run**: Labels or tagging a Deployment. Using labeling we can tie resources together. We will see this in the Services part as well.
-- **replicas**: how many pods should be started of the application.
-- **image**: name of the image that needs to be used. Kubernetes will pull the images from the repo, in this case the AWS ecr repo public.ecr.aws/n5p3f3u5/,and the name of the image is npm-fiesta
-- **containerPort**: This is the port the container will use natively! This is important due to the fact that a wrong port definition will NOT allow any communication to the container.
+   **Lines 1-20** define the **Deployment**
 
-Explained Service
-^^^^^^^^^^^^^^^^^
+      - **kind**: Deployment
 
-In the Service part fo the YAML file we see also important parameters.
+         `Deployments <https://kubernetes.io/docs/concepts/workloads/controllers/deployment/>`_ describe the desired state for Pods and ReplicaSets and functions similar to an installation script.
 
-- **spec -> ports -> port**: the port definition for the service to start listening on port 3000 and the TCP protocol
-- **spec -> selector -> run**: this is where we tie this service together with the deployment. This tells Kubernetes that the service must be tied to all resources that have the label **run: npm-fiesta**. Reason for using labels tieing resources together independent of the amount, as example pods, is that it is much easier then using it on name based or even IP based. Consider the labeling in the same context as the categories in Nutanix' solutions, like Flow or even grouping VMs together in categories
+      - **namespace**: default
 
-Deployment
-^^^^^^^^^^
+         `Namespace <https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/>`_ are used to provide logical separation between Pods deployed on a Kubernetes cluster. They define virtual clusters much the same way VLANs provide logical separation on a network. This allows different applications with conflicting Resource names (think two apps that each have a Service named **gateway** used to expose their web interface) to run on the same cluster.
 
-Now we have the basic YAML file ready, let's deploy the Pod.
+      - **spec > replicas:** 3
 
-#. Open your Terminal or Powershell session and run
+         This defines how many copies of the Pod should be started. Multiple copies of a Pod are typically used for high availability or scaling performance.
 
-   .. code-block:: bash
+      - **spec > metadata > labels:** run: fiesta-web
 
-      kubectl apply -f fiesta_app.yaml
+         `Label selectors <https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors>`_ are used to identify and group Kubernetes Resources. This label will be referenced by our Service so it knows which **Deployment** to execute.
 
-   .. figure:: images/1.png
+      - **spec > template > spec > containers > image:** public.ecr.aws/n5p3f3u5/npm-fiesta:latest
 
-#. As we have Lens running, let's use that dashboard to see what influence the YAML had on the Kubernetes environment (if you have skipped that part, follow this :ref:`link` )
+         This defines the repository location of the Docker container which will be downloaded as part of the Deployment. In this case, our Fiesta container is being hosted on the Amazon Elastic Container Registry.
 
-[INSERT CORRECT LINK]
+      - **spec > template > spec > containers > ports > containerPort:** 3000
 
-#. Click on the Workloads -> Pods
-#. Search for  **npm-fiesta**, based on the YAML file, there should be three (replicas)
+         This is the port that the Docker container NodeJS webserver is listening on. It is hard coded as part of the container image.
 
-   .. figure:: images/2.png
+   **Lines 19-29** define the **Service**
 
-#. Open VSC and change in the fiesta_app.yaml and change the **replicas** number to 2
+      - **kind**: Service
 
-#. Save the file
-#. In your terminal run **kubectl apply -f fiesta_app.yaml** and see the effect in Lens on the change.
-#. Lens is showing a Terminating message under the status column of one of the npm-fiesta pods
+         `Services <https://kubernetes.io/docs/concepts/services-networking/service/>`_ allow you to expose a set of Pods as a service on the network.
 
-   .. figure:: images/3.png
+      - **metadata > name:** fiesta-web-svc
 
-Check deployment
-^^^^^^^^^^^^^^^^
+         This is the name of the service that will be advertised on the cluster.
 
-Let's see if the application is running. To do that we are going to use Lens as that can also show pods that have not been published yet and only inside the kubernetes separated network.
+      - **spec > ports > port:** 3000
 
-#. Click on one of the npm-fiesta pods and scroll on the right hand side down till you see Ports
+         Which port the Service will use on the network. This does **not** need to match the container port, this choice was made to reduce lab mistakes.
 
-   .. figure:: images/4.png
+      - **spec > selector:** run: fiesta-web
 
-#. Click on the text 3000/TCP. A new browser tab will open and shows you the Fiesta App. But if you click on the Stores, Products or Inventory icons click, not really useful information. e have forgotten to tell the Fiesta App where the database is located. At least the Application is running....
+         This is what ties the Service to the Deployment. Note the Selector value matches the same **run: fiesta-web-pods** label applied to the Deployment. The benefit of using labels to define the resource requirement for the Service is that labels are independent of scale (# of Pods) or IPs. This is similar to the concept of using Nutanix Categories, for example when tagging VMs for Flow or Data Protection policies.
 
-Now let's make sure we can access the application from outside the Kubernetes cluster before we fix the database issue.
+Deploying Fiesta
+++++++++++++++++
 
-Traefik configuration
----------------------
+Now that you have created your manifest and understand the actions it will perform, we can appply the file to the cluster.
 
-#. Open in Visual Code the earlier created **traefik-routes.yaml** file.
-#. Copy all the content which already in the file. Wea re going to use that as a template to have another route for our Fiesta App
-#. At the end of the file, on a new line at the beginning of the file, type ``---`` so we have a separator in the file. Again we are going to created a new section for another route the ``---`` symbol is that separator symbol
-#. Past the content **BELOW** the ``---`` symbol on a new line
-#. Your file should like the below screenshot
+#. Return to **PowerShell** and run ``kubectl apply -f fiesta_app.yaml``
 
-   .. figure:: images/5.png
+#. Return to **Lens** and select **Workloads > Pods** to view your deployment in the dashboard.
 
-#. In the lower part change the following fields:
+   .. figure:: images/14.png
 
-   - **namespace:** portainer -> default
-   - **Host:** portainer.gts2021.local -> fiesta.gts2021.local
-   - **services -> name:** portainer -> npm-fiesta
-   - **port:** 9000 -> 3000
+   You should observe 3 **fiesta-web-pods** running. You can select an individual Pod to view the Node on which the Pod is running, its internal IP, labels, performance, etc.
 
-   .. figure:: images/6.png
+#. Return to **Visual Studio Code** and reduce the **replicas** from **3** to **2** and save your **fiesta_app.yaml** file.
 
-#. Save the file
-#. Run the command ``kubectl apply -f traefik-routes.yaml``
-#. Open the Traefik page again and click on the HTTP text at the top of the screen...
-#. You should see the new route being mentioned and a green check mark in front of the rule.
+#. Run ``kubectl apply -f fiesta_app.yaml`` to apply the change.
 
-   .. figure:: images/7.png
+   With Kubernetes, you can rapidly update configurations without first having to clean up your old configuration.
 
-#. Now that the route is in Traefik, we need to tell our machine where to find the URL. Change the **hosts** file like we done before and add the line for the resolving of fiesta.gts2021.local to point to the EXTERNAL-IP address of Traefik and save the file.
+#. In **Lens**, observe that one of your Pods is being **Terminated** as it is no longer required.
 
-   .. figure:: images/8.png
+   .. figure:: images/14.png
 
-#. Back to the browser and type in ``http://fiesta.gts2021.local`` and the Fiesta App as we have seen using Lens should appear. Still the database is unknown to the app, but we see at least the page, so we know that the routing is working and can access the page from outside the Kubernetes cluster.
+   Imagine applying the same Infrastructure-as-Code CI/CD methodology covered in the **Containerizing Apps and CI/CD** lab to this environment - your **YAML** files would exist in a source repository, and changes like the update to the number of replicas would become commits generating build tasks that would apply the changes to your Kubernetes cluster - *powerful stuff!*
 
-Connect to the database
------------------------
+   Our containers hosting the web service are now running, but we have a problem - *how do we access them?*
 
-As the application is running and accessible from our machine, we need to tell the application where the database is. o make that happen, follow these steps.
+Configuring Traefik
++++++++++++++++++++
 
-#. In VSC, open the file **fiesta_app.yaml**
+In order to get access to our **Fiesta** web frontend, we need to define a new **IngressRoute**. An **IngressRoute** is a custom resource type (**kind**) created by the **Custom Resource Definition** for **Traefik** during its installation.
 
-#. As the application needs environmental parameters, we are going to make changes to the YAML file. Use this URL for more background information (https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/)
+#. Return to **Visual Studio Code** and click **File > New File**.
 
-#. In the containers section (in the Deployment section) add the following lines under image and use the same ident (**image** line is for reference!):
+#. Paste the following into the blank file:
 
    .. code-block:: yaml
 
-      image: public.ecr.aws/n5p3f3u5/npm-fiesta:latest
+      apiVersion: traefik.containo.us/v1alpha1
+      kind: IngressRoute
+      metadata:
+        name: simpleingressroute
+        namespace: default
+      spec:
+        entryPoints:
+          - web
+        routes:
+        - match: Host(`fiesta.lab.local`)
+          kind: Rule
+          services:
+          - name: fiesta-web-svc
+            port: 3000
+
+   This will define a new rule in **Traefik** that will forward HTTP (**web**) traffic for **fiesta.lab.local** hostname to the **fiesta-web-svc**, which is the advertised name exposing your **fiesta-web-pods** on the internal cluster network.
+
+#. Save the file as **traefik-routes.yaml** in your **Downloads** folder.
+
+#. In **PowerShell**, run ``kubectl apply -f traefik-routes.yaml`` to add your **Traefik IngressRoute**.
+
+#. In **PowerShell**, run ``kubectl get svc`` and note your **Traefik EXTERNAL-IP**.
+
+   .. figure:: images/16.png
+
+#. In **Traefik** (\http://*<TRAEFIK-EXTERNAL-IP>*:8080), select **HTTP** from the toolbar to verify your new route appears.
+
+   .. figure:: images/7b.png
+
+   In a production environment, your **Host** value would be an accessible DNS entry. To simplify the lab, you will create a local entry in the Windows **/etc/hosts** file instead of a DNS A Record.
+
+#. Replace *<TRAEFIK-EXTERNAL-IP>* with the IP from **Step 5** and run the following command in **PowerShell**:
+
+   .. code-block:: powershell
+
+      Add-Content -Path C:\Windows\System32\drivers\etc\hosts -Value "<TRAEFIK-EXTERNAL-IP>`tfiesta.lab.local" -Force
+      
+      cat C:\Windows\System32\drivers\etc\hosts
+
+   .. note::
+
+      No, ``<TRAEFIK-EXTERNAL-IP>`tfiesta.lab.local`` isn't a typo. ```t`` in PowerShell inserts a tab between the **<TRAEFIK-EXTERNAL-IP>** value and **fiesta.lab.local**.
+
+   .. figure:: images/17.png
+
+#. Open \http://fiesta.lab.local in your **USER**\ *##*\ **-WinToolsVM** browser. *Looking good!*
+
+   .. figure:: images/18.png
+
+#. Click **Stores** or **Products**.
+
+   *Whoops! Maybe not looking so good.*
+
+   We're now able access our highly available set of **fiesta-web-pods** through our **LoadBalancer** and **Ingress Controller**, but we forgot about the database!
+
+Configuring The Database Connection
++++++++++++++++++++++++++++++++++++
+
+As seen in the **Containerizing Apps & CI/CD** lab, the **npm-fiesta** container image can accept multiple environment variables to dynamically configure the application at runtime.
+
+Kubernetes can `set environment variables <https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container>`_ as part of the manifest file.
+
+#. Return to **Visual Studio Code** and open your **fiesta_app.yaml** file.
+
+#. In the **containers:** section, add the following lines below the **image:** line:
+
+   .. code-block:: yaml
+
       env:
         - name: DB_PASSWD
           value: fiesta
@@ -188,43 +226,30 @@ As the application is running and accessible from our machine, we need to tell t
         - name: DB_TYPE
           value: mysql
 
+   The indentation should match the screenshot below.
+
    .. figure:: images/10.png
 
-[REMIND THEM TO CHANGE IP ADDRESS ABOVE]
+#. **IMPORTANT!** Change *<IP ADDRESS OF YOUR MARIADB SERVER>* to the IP address of your **User**\ *##*\ **-MariaDB_VM** VM.
 
-#. Save the file and run the command ``kubectl apply -f fiesta_app.yaml`` from your terminal or Powershell session.
-#. The command should show a configured text in the output of the command with respect to the deployment. This means that the change we made, the environmental variables, have been configured and executed.
+   .. note::
 
-   .. figure:: images/11.png
+      The database VM has already been provisioned for you, you do not need to deploy the database.
 
-#. Now let's open the browser and refresh the page where we only had the app running, but no output in the Products etc.
-#. The page is showing the correct output as we expected using the environmental variables when we redeployed the Fiesta App Pods
+      .. figure:: images/21.png
 
-   .. figure:: images/12.png
+#. Save the file and run ``kubectl apply -f fiesta_app.yaml`` to update your deployment.
 
+#. Wait a minute, and refer \http://fiesta.lab.local in your **USER**\ *##*\ **-WinToolsVM** browser.
+
+   .. figure:: images/20.png
+
+   *That's better!*
 
 .. raw:: html
 
-    <BR><center><h2>That concludes this module!</H2></center>
+    <H1><a href="http://lookup.ntnxworkshops.com/" target="_blank"><font color="#B0D235"><center>Click Here To Submit Validation Request</center></font></a></H1>
 
+You now have a highly available web front end for your **Fiesta** application to is accessible to the outside world on a standard HTTP port, while maintaining the ability to share port 80 with other services that could be deployed to the Kubernetes cluster in the future.
 
-------
-
-All is working! We have deployed our app into a Kubernetes, changed the URL routing and connected to the database. Next we need to figure out the day-2 stuff...
-
-- Monitoring, not just using a Dashboard, but also having some more insights
-- Logging
-- Backup
-- Expand the Kubernetes cluster
-- Change the replicas AFTER we have expanded the cluster
-- Upgrade the cluster
-
-The rest of the workshop will focus on that....
-
-Takeaways
----------
-
-- Deploying an container based that uses environmental variables is relatively easy to do
-- Changing the routing of URL into the application is just a few lines and traffic moves into the Kubernetes cluster without to difficult configuration changes
-- Changes to YAML files and applying the using ``kubectl apply`` are seamlessly activated, not need to drop the "old" config and rerun the config. Kubernetes takes care of that.
-- Using external application outside of Kubernetes can easily be configured. All depends on the "power" of the container being used and the underlying network. Nothing specific to Kubernetes
+In the final exercise we will explore common **Day 2 Operations** for managing Karbon Kubernetes infrastructure.
