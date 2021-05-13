@@ -36,7 +36,7 @@ For Prometheus (http://www.prometheus.io) we are already done. Reason is that Ka
    .. figure:: images/1.png
 
    .. note::
-      If you don't see the pod mentioned, make sure that in the right hand side of Lens, you have **All Namespaces** selected.
+      If you don't see the pod mentioned, make sure that in the right-hand side of Lens, you have **All Namespaces** selected.
 
       .. figure:: images/1-a.png
 
@@ -166,7 +166,7 @@ Deployment
    .. figure:: images/3.png
 
    .. note::
-      If you don't see the pod mentioned, make sure that in the right hand side of Lens, you have **All Namespaces** selected.
+      If you don't see the pod mentioned, make sure that in the right-hand side of Lens, you have **All Namespaces** selected.
 
       .. figure:: images/1-a.png
 
@@ -272,7 +272,7 @@ We are going to import some dashboard that are already pre-built for people.
 
    .. figure:: images/12.png
 
-#. Other dashboards can be found using the Grafana webpage at https://www.grafana.com/grafana/dashboards. Search for your dashboard of choice and click on it. On the right hand side of the screen you see the ID that we just used. Follow the same process as we have just now done and import your choice. The one we used is just an example....
+#. Other dashboards can be found using the Grafana webpage at https://www.grafana.com/grafana/dashboards. Search for your dashboard of choice and click on it. On the right-hand side of the screen you see the ID that we just used. Follow the same process as we have just now done and import your choice. The one we used is just an example....
 
 
 Logging
@@ -743,7 +743,7 @@ K10 installation
 #. In Lens you can also track the status of the pods.
 
    .. note::
-      If you don't see the pods mentioned, make sure that in the right hand side of Lens, you have **All Namespaces** selected.
+      If you don't see the pods mentioned, make sure that in the right-hand side of Lens, you have **All Namespaces** selected.
 
 #. If all pods are in the running state use the following temporary command in your terminal or Powershell session to see if we can get to the Dashboard of K10 kasten
 
@@ -799,7 +799,7 @@ K10 - Configure S3 storage
 
    .. figure:: images/41.png
 
-#. Click on **Cluster Settings** on the right hand side of the Screen
+#. Click on **Cluster Settings** on the right-hand side of the Screen
 #. In the **Location Profiles** click the ** + New Profile** button
 #. Fill the fields with the following values:
 
@@ -915,7 +915,7 @@ Impact on the objects store
 
 #. Open your bucket in Nutanix Objects via **Prism Central ->** :fa:`bars` **-> Services -> Objects -> Your Object store -> Your bucket**
 
-#. Click on the Performance on the right hand side and you should see the "load" the backup has had on your bucket.
+#. Click on the Performance on the right-hand side and you should see the "load" the backup has had on your bucket.
 
    .. figure:: images/51.png
 
