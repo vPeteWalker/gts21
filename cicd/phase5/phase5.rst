@@ -676,7 +676,7 @@ Testing Your Development Build
     --------------------------------
 
     #. Open your Era instance
-    #. Goto **Databases (drop down menu) -> Clones**
+    #. Goto **Databases (drop-down menu) -> Clones**
     #. Click the radio button in from of your *Initials* **-FiestaDB_DEV** clone
     #. Click the **Refresh** button
     #. Select under **Snapshot** your **First-Snapshot**

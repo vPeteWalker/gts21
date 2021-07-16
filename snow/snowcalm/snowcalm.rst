@@ -206,7 +206,7 @@ Ordering VMs
 
 With your Catalog Item active, you're ready to test ordering your first VM as an end user.
 
-#. From the **System Administrator** drop down menu in the upper-right, click **Logout**.
+#. From the **System Administrator** drop-down menu in the upper-right, click **Logout**.
 
    .. figure:: images/13.png
 
